@@ -6,12 +6,13 @@ function createShip(length) {
             this.hits++;
         },
         isSunk() {
-           return this.hits >= this.length
+            return this.hits >= this.length
         }
     }
-    return ship
-}
-
-// let shipOne = createShip(2)
-
-module.exports = createShip;
+        return ship
+    }
+    
+    // let shipOne = createShip(2)
+    
+    module.exports = createShip;
+    
