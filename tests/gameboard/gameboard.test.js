@@ -1,5 +1,5 @@
+const { describe } = require('yargs');
 const createGameBoard = require('../../src/gameboard');
-// const gameboard = require('../../src/gameboard');
 const createShip = require('../../src/ship');
 
 test('gameboard array length should be 10', () => {
@@ -7,15 +7,6 @@ test('gameboard array length should be 10', () => {
   gb.createGrid();
   expect(gb.grid).toHaveLength(10);
 });
-
-// test('calling place ship horizontally should place the ship at given coords', () => {
-//   const ship = createShip(3);
-//   const gb = createGameBoard();
-//   gb.createGrid();
-//   gb.placeShip([1, 3], ship, 'horizontal');
-//   expect(gb.grid[1][3], gb.grid[1][4], gb.grid[1][5]).toMatchObject(ship);
-// //   expect(gb.placeShip([1, 3], ship, 'horizontal'));
-// });
 
 describe('placeShip', () => {
   let ship;
