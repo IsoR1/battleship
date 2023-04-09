@@ -36,15 +36,16 @@ const createGameBoard = () => {
       if (typeof targetedShip === 'object') {
         targetedShip.hit();
         if (targetedShip.isSunk()) {
-          // console.log('You sunk a ship!');
           const sunkShipIndex = this.shipsOnBoard.indexOf(targetedShip);
           this.shipsOnBoard.splice(sunkShipIndex, 1);
-          console.log(this.shipsOnBoard);
         }
       } else {
         this.missedShots.push(coord);
         console.log('You missed!', this.missedShots);
       }
+    },
+    allShipsSunk() {
+      return this.shipsOnBoard.length === 0;
     },
   };
   return board;
