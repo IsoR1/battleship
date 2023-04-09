@@ -1,5 +1,6 @@
-function createShip(length) {
+function createShip(name, length) {
   const ship = {
+    name,
     length,
     hits: 0,
     hit() {
@@ -11,7 +12,5 @@ function createShip(length) {
   };
   return ship;
 }
-
-// let shipOne = createShip(2)
 
 module.exports = createShip;

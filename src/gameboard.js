@@ -2,6 +2,7 @@ const createGameBoard = () => {
   const board = {
     grid: [],
     missedShots: [],
+    shipsOnBoard: [],
 
     createGrid() {
       for (let i = 0; i < 10; i += 1) {
@@ -13,6 +14,9 @@ const createGameBoard = () => {
       }
     },
     placeShip(coord, ship, alignment) {
+      if (!alignment) {
+        throw new Error('Alignment is required to place a ship');
+      }
       const upperAlignment = alignment.toUpperCase();
       if (upperAlignment === 'VERTICAL') {
         const endRow = coord[0] + ship.length - 1;
@@ -25,10 +29,18 @@ const createGameBoard = () => {
           this.grid[coord[0]][i] = ship;
         }
       }
+      this.shipsOnBoard.push(ship);
     },
     receiveAttack(coord) {
-      if (typeof this.grid[coord[0]][coord[1]] === 'object') {
-        this.grid[coord[0]][coord[1]].hit();
+      const targetedShip = this.grid[coord[0]][coord[1]];
+      if (typeof targetedShip === 'object') {
+        targetedShip.hit();
+        if (targetedShip.isSunk()) {
+          // console.log('You sunk a ship!');
+          const sunkShipIndex = this.shipsOnBoard.indexOf(targetedShip);
+          this.shipsOnBoard.splice(sunkShipIndex, 1);
+          console.log(this.shipsOnBoard);
+        }
       } else {
         this.missedShots.push(coord);
         console.log('You missed!', this.missedShots);
