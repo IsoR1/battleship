@@ -40,7 +40,7 @@ const createGameBoard = () => {
           this.shipsOnBoard.splice(sunkShipIndex, 1);
         }
       } else {
-        this.missedShots.push(coord);
+        this.missedShots.push([coord[0], coord[1]]);
         console.log('You missed!', this.missedShots);
       }
     },
