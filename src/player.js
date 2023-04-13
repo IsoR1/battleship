@@ -17,7 +17,12 @@ const createAi = (gameBoard) => {
       const subArr = gameBoard.grid[coordRow];
       const coordCol = Math.floor(Math.random() * subArr.length);
       const coord = [coordRow, coordCol];
-      this.gameBoard.receiveAttack(coord);
+      const coordHit = gameBoard.missedShots.some((el) => coord[0] === el[0] && coord[1] === el[1]);
+      if (!coordHit) {
+        this.gameBoard.receiveAttack(coord);
+      } else {
+        throw new Error('Position has already been hit');
+      }
     },
   };
   return ai;
