@@ -38,6 +38,18 @@ describe('placeShip', () => {
 
     expect(gameBoard.shipsOnBoard[0]).toMatchObject(ship);
   });
+
+  test('Should not be able to place a ship horizontally where there already is one', () => {
+    const newShip = createShip('Carrier', 5);
+    gameBoard.placeShip([0, 3], ship, 'horizontal');
+    expect(() => gameBoard.placeShip([0, 5], newShip, 'horizontal')).toThrow('There is already a ship at this position');
+  });
+
+  test('Should not be able to place a ship vertically where there already is one', () => {
+    const newShip = createShip('Carrier', 5);
+    gameBoard.placeShip([0, 3], ship, 'vertical');
+    expect(() => gameBoard.placeShip([2, 3], newShip, 'vertical')).toThrow('There is already a ship at this position');
+  });
 });
 
 describe('receiveAttack', () => {

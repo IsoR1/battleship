@@ -21,11 +21,17 @@ const createGameBoard = () => {
       if (upperAlignment === 'VERTICAL') {
         const endRow = coord[0] + ship.length - 1;
         for (let i = coord[0]; i <= endRow; i += 1) {
+          if (this.grid[i][coord[1]] !== '') {
+            throw new Error('There is already a ship at this position');
+          }
           this.grid[i][coord[1]] = ship;
         }
       } else if (upperAlignment === 'HORIZONTAL') {
         const endCol = coord[1] + ship.length - 1;
         for (let i = coord[1]; i <= endCol; i += 1) {
+          if (this.grid[coord[0]][i] !== '') {
+            throw new Error('There is already a ship at this position');
+          }
           this.grid[coord[0]][i] = ship;
         }
       }

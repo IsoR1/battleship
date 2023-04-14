@@ -19,7 +19,6 @@ describe('createAi', () => {
   });
 
   test('Position that has been hit should not be hit again', () => {
-    // gameBoard.missedShots
     for (let i = 0; i < gameBoard.grid.length; i += 1) {
       for (let j = 0; j < gameBoard.grid[i].length; j += 1) {
         gameBoard.missedShots.push([i, j]);
