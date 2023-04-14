@@ -44,11 +44,12 @@ const createGameBoard = () => {
         if (targetedShip.isSunk()) {
           const sunkShipIndex = this.shipsOnBoard.indexOf(targetedShip);
           this.shipsOnBoard.splice(sunkShipIndex, 1);
+          return `${targetedShip.name} has been sunk!`;
         }
-      } else {
-        this.missedShots.push([coord[0], coord[1]]);
-        console.log('You missed!', this.missedShots);
+        return 'Hit!';
       }
+      this.missedShots.push([coord[0], coord[1]]);
+      return ('Miss!');
     },
     allShipsSunk() {
       return this.shipsOnBoard.length === 0;

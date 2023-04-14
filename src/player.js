@@ -3,7 +3,7 @@ const createPlayer = (name, gameBoard) => {
     name,
     gameBoard,
     attackEnemyGameBoard(coord) {
-      this.gameBoard.receiveAttack(coord);
+      return this.gameBoard.receiveAttack(coord);
     },
   };
   return player;
@@ -19,10 +19,9 @@ const createAi = (gameBoard) => {
       const coord = [coordRow, coordCol];
       const coordHit = gameBoard.missedShots.some((el) => coord[0] === el[0] && coord[1] === el[1]);
       if (!coordHit) {
-        this.gameBoard.receiveAttack(coord);
-      } else {
-        throw new Error('Position has already been hit');
+        return this.gameBoard.receiveAttack(coord);
       }
+      throw new Error('Position has already been hit');
     },
   };
   return ai;
