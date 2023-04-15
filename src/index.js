@@ -6,4 +6,4 @@ const gameLoop = require('./game');
 // const ship = createShip('submarine', 3);
 // const gb = createGameBoard();
 // const ai = createAi(gb);
-gameLoop('Jeff');
+console.log(gameLoop('Jeff'));

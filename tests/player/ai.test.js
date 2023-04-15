@@ -24,6 +24,6 @@ describe('createAi', () => {
         gameBoard.missedShots.push([i, j]);
       }
     }
-    expect(() => ai.attackEnemyGameBoard()).toThrow('Position has already been hit');
+    expect(ai.attackEnemyGameBoard()).toBe('Position has already been hit');
   });
 });

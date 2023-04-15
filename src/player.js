@@ -21,7 +21,7 @@ const createAi = (gameBoard) => {
       if (!coordHit) {
         return this.gameBoard.receiveAttack(coord);
       }
-      throw new Error('Position has already been hit');
+      return 'Position has already been hit';
     },
   };
   return ai;
