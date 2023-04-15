@@ -1,4 +1,3 @@
-const readline = require('readline-sync');
 const createShip = require('./ship');
 const createGameBoard = require('./gameboard');
 const { createPlayer, createAi } = require('./player');
@@ -42,12 +41,10 @@ const gameLoop = (playerOneName) => {
         isGameOver = true;
         return 'Player One Wins!';
       }
-      // const prompt = require('prompt-sync')({ sigint: true });
       // const input = prompt('What position would you like to hit? ');
-      const input = readline.question('What position would you like to hit? ');
-      const coord = input.split(',').map((num) => parseInt(num.trim()));
-      const result = p1.attackEnemyGameBoard(coord);
-      console.log('Player turn:', result);
+      // const coord = input.split(',').map((num) => parseInt(num.trim()));
+      // const result = p1.attackEnemyGameBoard(coord);
+      // console.log('Player turn:', result);
       currentPlayer = ai;
     } else if (currentPlayer === ai) {
       if (ai.gameBoard.allShipsSunk()) {
