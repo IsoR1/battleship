@@ -13,6 +13,7 @@ body {
     height: 100%;
 }
 
+/* BATTLESHIP H1 */
 .battleship-tag {
     display: flex;
     border-bottom: 5px solid #2c3e50;
@@ -24,13 +25,44 @@ body {
     font-size: 5rem;
 }
 
+
+
+/* NAME FORM */
+
 #name-form-id {
-    background-color: yellow;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    gap: 15px;
 }
+
+#player-name {
+    border-radius: 10px;
+    /* font-size: 1.2rem; */
+    width: 50%;
+    height: 20px;
+}
+
+.name-input-div {
+    background-color: yellow;
+    width: 30%;
+}
+
+.name-label {
+    font-size: 1.3rem;
+    margin: 5px 0 0 0;
+}
+
+.name-button {
+    width: 30%;
+    padding: 2px 5px;
+    border-radius: 5px;
+    margin: 0 0 10px 0;
+}
+
+
+/*  */
 
 .game-board-div {
     height: 100%;
@@ -38,3 +70,4 @@ body {
     align-items: center;
     justify-content: center;
 }
+

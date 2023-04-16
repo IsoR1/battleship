@@ -7,5 +7,12 @@ const createMainContent = require('./mainContent');
 // const ship = createShip('submarine', 3);
 // const gb = createGameBoard();
 // const ai = createAi(gb);
-console.log(gameLoop('Jeff'));
 createMainContent();
+const nameInput = document.getElementById('player-name');
+const nameSubmitButton = document.querySelector('.name-button');
+nameSubmitButton.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (nameInput) {
+    console.log(gameLoop(nameInput.value));
+  }
+});

@@ -39,12 +39,12 @@ const gameLoop = (playerOneName) => {
     if (currentPlayer === p1) {
       if (p1.gameBoard.allShipsSunk()) {
         isGameOver = true;
-        return 'Player One Wins!';
+        return `${playerOneName} Wins!`;
       }
-      // const input = prompt('What position would you like to hit? ');
-      // const coord = input.split(',').map((num) => parseInt(num.trim()));
-      // const result = p1.attackEnemyGameBoard(coord);
-      // console.log('Player turn:', result);
+      const input = prompt('What position would you like to hit? ');
+      const coord = input.split(',').map((num) => parseInt(num.trim()));
+      const result = p1.attackEnemyGameBoard(coord);
+      console.log(`${playerOneName}'s turn:, ${result}`);
       currentPlayer = ai;
     } else if (currentPlayer === ai) {
       if (ai.gameBoard.allShipsSunk()) {

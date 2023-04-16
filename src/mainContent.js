@@ -18,10 +18,9 @@ const createBattleshipDiv = () => {
 const createFormElems = () => {
   const nameFormDiv = createEl('div', 'name-input-div');
   const nameInputForm = createEl('form');
-  const inputLabelDiv = createEl('div', 'input-label');
-  const nameLabel = createEl('label');
+  const nameLabel = createEl('label', 'name-label');
   const nameInput = createEl('input');
-  const nameButton = createEl('button');
+  const nameButton = createEl('button', 'name-button');
   nameInputForm.setAttribute('id', 'name-form-id');
   nameLabel.setAttribute('for', 'player-name');
   nameLabel.textContent = 'First Name:';
@@ -29,10 +28,8 @@ const createFormElems = () => {
   nameButton.setAttribute('type', 'submit');
   nameButton.innerText = 'Play game';
 
-  inputLabelDiv.appendChild(nameLabel);
-  inputLabelDiv.appendChild(nameInput);
-  nameInputForm.appendChild(inputLabelDiv);
-  //   nameInputForm.appendChild(nameButton);
+  nameInputForm.appendChild(nameLabel);
+  nameInputForm.appendChild(nameInput);
   nameInputForm.appendChild(nameButton);
   nameFormDiv.appendChild(nameInputForm);
 
