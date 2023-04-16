@@ -2,13 +2,17 @@ const createShip = require('./ship');
 const createGameBoard = require('./gameboard');
 const { createPlayer, createAi } = require('./player');
 
-const gameLoop = (playerOneName) => {
-  const p1GameBoard = createGameBoard();
+// const p1GameBoard = createGameBoard();
+// const p1 = createPlayer(playerOneName, aiGameBoard);
+
+const gameLoop = (p1, p1GameBoard, aiGameBoard) => {
+  // const p1GameBoard = createGameBoard();
+  // p1.GameBoard.createGrid();
   p1GameBoard.createGrid();
-  const aiGameBoard = createGameBoard();
+  // const aiGameBoard = createGameBoard();
   aiGameBoard.createGrid();
-  const p1 = createPlayer(playerOneName, aiGameBoard);
-  const ai = createAi(p1GameBoard);
+  // const p1 = createPlayer(playerOneName, aiGameBoard);
+  const ai = createAi(p1.gameBoard);
 
   const p1Carrier = createShip('Carrier', 5);
   const p1BattleShip = createShip('Battleship', 4);
@@ -39,12 +43,12 @@ const gameLoop = (playerOneName) => {
     if (currentPlayer === p1) {
       if (p1.gameBoard.allShipsSunk()) {
         isGameOver = true;
-        return `${playerOneName} Wins!`;
+        return `${p1.name} Wins!`;
       }
-      const input = prompt('What position would you like to hit? ');
-      const coord = input.split(',').map((num) => parseInt(num.trim()));
-      const result = p1.attackEnemyGameBoard(coord);
-      console.log(`${playerOneName}'s turn:, ${result}`);
+      // const input = prompt('What position would you like to hit? ');
+      // const coord = input.split(',').map((num) => parseInt(num.trim()));
+      // const result = p1.attackEnemyGameBoard(coord);
+      // console.log(`${playerOneName}'s turn:, ${result}`);
       currentPlayer = ai;
     } else if (currentPlayer === ai) {
       if (ai.gameBoard.allShipsSunk()) {

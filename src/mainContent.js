@@ -36,14 +36,34 @@ const createFormElems = () => {
   return nameFormDiv;
 };
 
-const createMainContent = () => {
-  const battleshipTag = createBattleshipDiv();
-  const gameBoardDiv = createEl('div', 'game-board-div');
-  const formDiv = createFormElems();
+// const renderGameBoardGrid = (gameBoard) => {
+//   for (let i = 0; i < gameBoard.grid.length; i++) {
+//     const rowDiv = createEl('div', 'row-div');
+//     for (let j = 0; j < gameBoard.grid[i].length; j++) {
+//       const colDiv = createEl('div', 'col-div');
+//       rowDiv.appendChild(colDiv);
+//     }
+//     return rowDiv;
+//   }
+// };
 
+const renderHeader = () => {
+  const battleshipTag = createBattleshipDiv();
   container.append(battleshipTag);
-  container.appendChild(gameBoardDiv);
-  gameBoardDiv.appendChild(formDiv);
 };
 
-module.exports = createMainContent;
+const createForm = () => {
+  const formDiv = createFormElems();
+  // gameBoardDiv.appendChild(formDiv);
+  container.appendChild(formDiv);
+};
+
+const createMainContent = (gameBoard) => {
+  const gameBoardDiv = createEl('div', 'game-board-div');
+
+  // const renderGameGrid = renderGameBoardGrid(gameBoard);
+  container.appendChild(gameBoardDiv);
+  // gameBoardDiv.appendChild(renderGameGrid);
+};
+
+module.exports = { renderHeader, createForm, createMainContent };
