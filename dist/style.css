@@ -1,11 +1,13 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
     height: 100vh;
     width: 100vw;
+    display: flex;
 }
 
 .hidden {
@@ -14,10 +16,18 @@ body {
 
 .container {
     background-color: red;
-    height: 100%;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
 }
 
 /* BATTLESHIP H1 */
+
+.battleship-h1-div {
+    display: flex;
+    flex-direction: column;
+}
+
 .battleship-tag {
     display: flex;
     border-bottom: 5px solid #2c3e50;
@@ -25,8 +35,8 @@ body {
     align-items: center;
     background-color: #34495e;
     color: #ecf0f1;
-    height: 15%;
     font-size: 5rem;
+    flex-grow: 1;
 }
 
 
@@ -69,10 +79,68 @@ body {
 
 /*  */
 
-.game-board-div {
-    height: 100%;
+.ship-placement-container {
+    margin-left: 5px
+}
+
+.ship-placement-h3 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    white-space: nowrap;
+}
+
+.placement-container {
+    margin-left: 5px;
+}
+
+.ships-list {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+}
+
+.ship-alignment-options {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.alignment-p {
+    display: flex;
     justify-content: center;
+}
+
+
+/*  */
+.main-body-div {
+display: flex;
+flex-grow: 1;
+margin-top: 20px;
+}
+
+.game-board-div {
+    width: 100%;
+    display: flex;
+    margin-left: 30px
+}
+
+.container-div {
+    background-color: yellow;
+    width: 80%;
+    height: 80%;
+    padding: 4px 4px;
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    grid-row-gap: 6px;
+}
+
+.row-div {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-column-gap: 6px;
+}
+
+.col-div {
+    background-color: palegoldenrod;
+    border: 1px solid azure;
 }
 

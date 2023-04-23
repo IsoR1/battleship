@@ -4,28 +4,30 @@ const { createPlayer, createAi } = require('./player');
 const gameLoop = require('./game');
 const { renderHeader, createForm, createMainContent } = require('./mainContent');
 
-// const ship = createShip('submarine', 3);
-// const gb = createGameBoard();
-// const ai = createAi(gb);
 const header = renderHeader();
 const nameForm = createForm();
 const nameInput = document.getElementById('player-name');
-const aiGameBoard = createGameBoard();
 const nameSubmitButton = document.querySelector('.name-button');
 const nameFormDiv = document.querySelector('.name-input-div');
+const columns = document.querySelectorAll('.col-div');
+const p1GameBoard = createGameBoard();
+const aiGameBoard = createGameBoard();
+const p1 = createPlayer(nameInput.value, aiGameBoard);
 nameSubmitButton.addEventListener('click', (e) => {
   e.preventDefault();
   if (nameInput) {
-    const p1GameBoard = createGameBoard();
-    const aiGameBoard = createGameBoard();
-    const p1 = createPlayer(nameInput.value, aiGameBoard);
-    // nameFormDiv.classList.add('hidden');
+    p1GameBoard.createGrid();
+    aiGameBoard.createGrid();
     nameFormDiv.style.display = 'none';
-    // createMainContent(p1);
-    // const p1GameBoard = createGameBoard();
-    // const aiGameBoard = createGameBoard();
-    // const p1 = createPlayer(nameInput.value, aiGameBoard);
-    // console.log(gameLoop(p1, p1GameBoard, aiGameBoard));
+    createMainContent(p1.gameBoard);
     console.log(nameInput);
+  }
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.matches('.col-div')) {
+    console.log(e.target.dataset.colId);
+    console.log(e.target.dataset.rowId);
+    console.log(p1.gameBoard.grid[e.target.dataset.rowId][e.target.dataset.colId]);
   }
 });

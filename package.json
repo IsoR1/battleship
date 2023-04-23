@@ -11,7 +11,8 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "webpack"
+    "build": "webpack",
+    "watch": "webpack --watch"
   },
   "name": "battleship",
   "description": "function createShip(length) { const ship = { length: length, hits: 0, hit() { this.hits++; }, isSunk() { return this.hits >= this.length } } return ship }",
