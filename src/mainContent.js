@@ -141,7 +141,7 @@ const showShipsOnBoard = (coord, ship, alignment) => {
   const firstLetter = ship.name[0].toUpperCase();
   const row = document.querySelector(`[data-row-id="${coord[0]}"]`);
   if (alignment === 'horizontal') {
-    for (let i = coord[1]; i < coord[1] + ship.length; i++) {
+    for (let i = coord[1]; i < coord[1] + ship.length; i += 1) {
       const cell = row.querySelector(`[data-col-id="${i}"]`);
       const p = createEl('p', 'ship-letter');
       p.innerText = firstLetter;

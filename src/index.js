@@ -31,45 +31,58 @@ nameSubmitButton.addEventListener('click', (e) => {
 document.addEventListener('click', (e) => {
   if (e.target.matches('.place-ship-button')) {
     e.preventDefault();
-    const carrierInput = document.getElementById('carrier').value;
-    const battleshipInput = document.getElementById('battleship').value;
-    const cruiserInput = document.getElementById('cruiser').value;
-    const submarineInput = document.getElementById('submarine').value;
-    const destroyerInput = document.getElementById('destroyer').value;
+    // const carrierInput = document.getElementById('carrier').value;
+    // const battleshipInput = document.getElementById('battleship').value;
+    // const cruiserInput = document.getElementById('cruiser').value;
+    // const submarineInput = document.getElementById('submarine').value;
+    // const destroyerInput = document.getElementById('destroyer').value;
     const selectedAlignment = document.querySelector('input[name="alignment"]:checked').value;
     // console.log(selectedAlignment);
+    const ships = [
+      { name: 'carrier', length: 5, inputId: 'carrier' },
+      { name: 'battleship', length: 4, inputId: 'battleship' },
+      { name: 'cruiser', length: 3, inputId: 'cruiser' },
+      { name: 'submarine', length: 3, inputId: 'submarine' },
+      { name: 'destroyer', length: 2, inputId: 'destroyer' },
+    ];
 
-    if (carrierInput) {
-      const carrier = createShip('carrier', 5);
-      const coord = carrierInput.split(', ').map(Number);
-      // console.log(carrierInput.split(', ').map(Number));
-      p1.gameBoard.placeShip(coord, carrier, selectedAlignment);
-      // p1.gameBoard.placeShip(carrierInput, carrier, selectedAlignment);
-      // console.log(p1.gameBoard.placeShip(carrierInput, carrier, selectedAlignment));
-      // console.log(p1GameBoard.placeShip(carrierInput, carrier, selectedAlignment));
-      // console.log(p1.gameBoard.grid);
-      // console.log(p1.gameBoard.placeShip([2, 2], 'carrier', 'horizontal'));
-      // p1.gameBoard.placeShip([2, 2], carrier, 'horizontal');
-      // console.log(p1.gameBoard.grid);
-      // console.log(p1GameBoard.grid);
-      showShipsOnBoard(coord, carrier, selectedAlignment);
-    }
+    ships.forEach((ship) => {
+      const input = document.getElementById(ship.inputId);
+      if (input.value) {
+        const newShip = createShip(ship.name, ship.length);
+        const coord = input.value.split(', ').map(Number);
+        p1.gameBoard.placeShip(coord, newShip, selectedAlignment);
+        showShipsOnBoard(coord, newShip, selectedAlignment);
+        console.log(input);
+        console.log(input.value);
+        console.log(p1.gameBoard.grid);
+        input.value = '';
+        input.classList.add('hidden');
+      }
+    });
 
-    if (battleshipInput) {
-      const battleShip = createShip('battleship', 4);
-    }
+    // if (carrierInput) {
+    //   const carrier = createShip('carrier', 5);
+    //   const coord = carrierInput.split(', ').map(Number);
+    //   p1.gameBoard.placeShip(coord, carrier, selectedAlignment);
+    //   showShipsOnBoard(coord, carrier, selectedAlignment);
+    // }
 
-    if (cruiserInput) {
-      const cruiser = createShip('cruiser', 3);
-    }
+    // if (battleshipInput) {
+    //   const battleShip = createShip('battleship', 4);
+    // }
 
-    if (submarineInput) {
-      const submarine = createShip('Submarine', 3);
-    }
+    // if (cruiserInput) {
+    //   const cruiser = createShip('cruiser', 3);
+    // }
 
-    if (destroyerInput) {
-      const destroyer = createShip('destroyer', 2);
-    }
+    // if (submarineInput) {
+    //   const submarine = createShip('Submarine', 3);
+    // }
+
+    // if (destroyerInput) {
+    //   const destroyer = createShip('destroyer', 2);
+    // }
   }
 });
 
