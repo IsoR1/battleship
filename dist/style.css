@@ -93,9 +93,16 @@ body {
     margin-left: 5px;
 }
 
+.ship-placement-form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
 .ships-list {
     display: flex;
     flex-direction: column;
+    gap: 4px;
 }
 
 .ship-alignment-options {
@@ -142,5 +149,21 @@ margin-top: 20px;
 .col-div {
     background-color: palegoldenrod;
     border: 1px solid azure;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.col-div:hover {
+    background-color: black;
+}
+
+.ship-placement-form input:invalid {
+    background-color: red
+}
+
+.ship-letter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

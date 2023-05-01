@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 const container = document.querySelector('.container');
 const createEl = (tag, className = '') => {
   const el = document.createElement(tag);
@@ -40,12 +41,12 @@ const renderGameBoardGrid = (gameBoard) => {
   const containerDiv = createEl('div', 'container-div');
   let rowId = 0;
   let colId = 0;
-  for (let i = 0; i < gameBoard.grid.length; i++) {
+  for (let i = 0; i < gameBoard.grid.length; i += 1) {
     const rowDiv = createEl('div', 'row-div');
     rowDiv.setAttribute('data-row-id', rowId);
     rowId += 1;
     colId = 0;
-    for (let j = 0; j < gameBoard.grid[i].length; j++) {
+    for (let j = 0; j < gameBoard.grid[i].length; j += 1) {
       const colDiv = createEl('div', 'col-div');
       colDiv.setAttribute('data-col-id', colId);
       colDiv.setAttribute('data-row-id', rowDiv.getAttribute('data-row-id'));
@@ -67,16 +68,6 @@ const createForm = () => {
   container.appendChild(formDiv);
 };
 
-// const createShipPlacementContainer = () => {
-//   const mainConDiv = createEl('div', 'placement-container');
-//   const header = createEl('h3', 'placement-header');
-//   header.textContent = 'Place your ships!';
-
-//   mainConDiv.appendChild(header);
-
-//   return mainConDiv;
-// };
-
 const createInputLabel = (name) => {
   const label = createEl('label');
   label.textContent = name;
@@ -91,9 +82,12 @@ const createInputLabel = (name) => {
 const createShipRadioGroup = () => {
   const radioGroup = createEl('div', 'ship-alignment-options');
   const options = ['Vertical', 'Horizontal'];
+  const name = 'alignment';
   options.forEach((option) => {
     const [label, input] = createInputLabel(option);
     input.setAttribute('type', 'radio');
+    input.setAttribute('name', name);
+    input.setAttribute('value', option.toLowerCase());
     radioGroup.appendChild(label);
     radioGroup.appendChild(input);
   });
@@ -107,6 +101,7 @@ const createShipCheckboxes = () => {
     const [label, input] = createInputLabel(ship);
     checkboxes.appendChild(label);
     checkboxes.appendChild(input);
+    input.setAttribute('pattern', '[0-9]');
   });
   return checkboxes;
 };
@@ -114,7 +109,7 @@ const createShipCheckboxes = () => {
 const createPlaceShipButton = () => {
   const placeShipDiv = createEl('div', 'place-ship-div');
   const placeShipButton = createEl('button', 'place-ship-button');
-  placeShipButton.innerText = 'Place ships!';
+  placeShipButton.innerText = 'Place ship!';
   placeShipDiv.appendChild(placeShipButton);
   return placeShipDiv;
 };
@@ -127,7 +122,6 @@ const leftSidePlaceShips = () => {
   const formDiv = createEl('div', 'ship-placement-form-div');
   const form = createEl('form', 'ship-placement-form');
 
-  const underFormDiv = createEl('div', 'ship-placement-under-form');
   const alignmentP = createEl('p', 'alignment-p');
   alignmentP.textContent = 'Choose your alignment:';
 
@@ -137,25 +131,38 @@ const leftSidePlaceShips = () => {
 
   placementDiv.append(placementH3);
   formDiv.append(form);
-  form.append(underFormDiv);
-  underFormDiv.append(alignmentP, radioGroup, checkboxes, placeShipButton);
+  form.append(alignmentP, radioGroup, checkboxes, placeShipButton);
   placementDiv.append(formDiv);
 
   return placementDiv;
+};
+
+const showShipsOnBoard = (coord, ship, alignment) => {
+  const firstLetter = ship.name[0].toUpperCase();
+  const row = document.querySelector(`[data-row-id="${coord[0]}"]`);
+  if (alignment === 'horizontal') {
+    for (let i = coord[1]; i < coord[1] + ship.length; i++) {
+      const cell = row.querySelector(`[data-col-id="${i}"]`);
+      const p = createEl('p', 'ship-letter');
+      p.innerText = firstLetter;
+      cell.append(p);
+      console.log(cell);
+    }
+  }
 };
 
 const createMainContent = (gameBoard) => {
   const gameBoardDiv = createEl('div', 'game-board-div');
   const underHeaderDiv = createEl('div', 'main-body-div');
   const placementDivs = leftSidePlaceShips();
-  // const placementForm = shipPlacementForm();
 
   const renderGameGrid = renderGameBoardGrid(gameBoard);
   container.appendChild(underHeaderDiv);
   underHeaderDiv.appendChild(placementDivs);
   underHeaderDiv.appendChild(gameBoardDiv);
   gameBoardDiv.appendChild(renderGameGrid);
-  // placementDivs.appendChild(placementDivs);
 };
 
-module.exports = { renderHeader, createForm, createMainContent };
+module.exports = {
+  renderHeader, createForm, showShipsOnBoard, createMainContent,
+};
