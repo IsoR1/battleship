@@ -15,6 +15,7 @@ const columns = document.querySelectorAll('.col-div');
 const p1GameBoard = createGameBoard();
 const aiGameBoard = createGameBoard();
 let p1;
+let numShipsPlaced = 0;
 nameSubmitButton.addEventListener('click', (e) => {
   e.preventDefault();
   if (nameInput) {
@@ -24,7 +25,6 @@ nameSubmitButton.addEventListener('click', (e) => {
     aiGameBoard.createGrid();
     nameFormDiv.style.display = 'none';
     createMainContent(p1.gameBoard);
-    console.log(nameInput);
   }
 });
 
@@ -45,6 +45,7 @@ document.addEventListener('click', (e) => {
       { name: 'submarine', length: 3, inputId: 'submarine' },
       { name: 'destroyer', length: 2, inputId: 'destroyer' },
     ];
+    const numShips = ships.length;
 
     ships.forEach((ship) => {
       const input = document.getElementById(ship.inputId);
@@ -58,8 +59,15 @@ document.addEventListener('click', (e) => {
         console.log(p1.gameBoard.grid);
         input.value = '';
         input.classList.add('hidden');
+        numShipsPlaced += 1;
       }
     });
+
+    if (numShipsPlaced === numShips) {
+      const shipPlacementContainer = document.querySelector('.ship-placement-container');
+      shipPlacementContainer.remove();
+      // shipPlacementContainer.classList.add('hidden');
+    }
 
     // if (carrierInput) {
     //   const carrier = createShip('carrier', 5);
