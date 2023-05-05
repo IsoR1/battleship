@@ -24,7 +24,7 @@ const createFormElems = () => {
   const nameButton = createEl('button', 'name-button');
   nameInputForm.setAttribute('id', 'name-form-id');
   nameLabel.setAttribute('for', 'player-name');
-  nameLabel.textContent = 'First Name:';
+  nameLabel.textContent = 'Name:';
   nameInput.setAttribute('id', 'player-name');
   nameButton.setAttribute('type', 'submit');
   nameButton.innerText = 'Play game';
@@ -137,32 +137,42 @@ const leftSidePlaceShips = () => {
   return placementDiv;
 };
 
-const showShipsOnBoard = (coord, ship, alignment) => {
-  const firstLetter = ship.name[0].toUpperCase();
-  const row = document.querySelector(`[data-row-id="${coord[0]}"]`);
-  if (alignment === 'horizontal') {
-    for (let i = coord[1]; i < coord[1] + ship.length; i += 1) {
-      const cell = row.querySelector(`[data-col-id="${i}"]`);
-      const p = createEl('p', 'ship-letter');
-      p.innerText = firstLetter;
-      cell.append(p);
-      console.log(cell);
-    }
-  }
+//
+// const showShipsOnBoard = (coord, ship, alignment) => {
+//   const firstLetter = ship.name[0].toUpperCase();
+//   const row = document.querySelector(`[data-row-id="${coord[0]}"]`);
+//   if (alignment === 'horizontal') {
+//     for (let i = coord[1]; i < coord[1] + ship.length; i += 1) {
+//       const cell = row.querySelector(`[data-col-id="${i}"]`);
+//       const p = createEl('p', 'ship-letter');
+//       p.innerText = firstLetter;
+//       cell.append(p);
+//     }
+//   }
+// };
+
+const createHitMissText = () => {
+  const div = createEl('div', 'hit-miss-div');
+  const h2 = createEl('h2', 'hit-miss-h2');
+  h2.textContent = 'Click a square to attack it';
+  div.appendChild(h2);
+  return div;
 };
 
 const createMainContent = (gameBoard) => {
   const gameBoardDiv = createEl('div', 'game-board-div');
   const underHeaderDiv = createEl('div', 'main-body-div');
   const placementDivs = leftSidePlaceShips();
+  // const hitMissDiv = createHitMissText();
 
   const renderGameGrid = renderGameBoardGrid(gameBoard);
   container.appendChild(underHeaderDiv);
   underHeaderDiv.appendChild(placementDivs);
+  // underHeaderDiv.appendChild(hitMissDiv);
   underHeaderDiv.appendChild(gameBoardDiv);
   gameBoardDiv.appendChild(renderGameGrid);
 };
 
 module.exports = {
-  renderHeader, createForm, showShipsOnBoard, createMainContent,
+  renderHeader, createForm, createHitMissText, createMainContent,
 };
