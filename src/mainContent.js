@@ -151,12 +151,26 @@ const leftSidePlaceShips = () => {
 //   }
 // };
 
-const createHitMissText = () => {
-  const div = createEl('div', 'hit-miss-div');
-  const h2 = createEl('h2', 'hit-miss-h2');
+const createAttackInstructions = () => {
+  const div = createEl('div', 'attack-instructions-div');
+  const h2 = createEl('h2', 'attack-instructions-h2');
   h2.textContent = 'Click a square to attack it';
   div.appendChild(h2);
   return div;
+};
+
+const createAttackResultsContainer = () => {
+  const div = createEl('div', 'attack-results-div');
+  const h3 = createEl('h3', 'attack-results-h3');
+
+  div.appendChild(h3);
+
+  return div;
+};
+
+const updateAttackResult = (player, attack) => {
+  const h3 = document.querySelector('.attack-results-h3');
+  h3.textContent = `${player.substring(0, 1).toUpperCase() + player.substring(1)}'s attack: ${attack}`;
 };
 
 const createMainContent = (gameBoard) => {
@@ -174,5 +188,5 @@ const createMainContent = (gameBoard) => {
 };
 
 module.exports = {
-  renderHeader, createForm, createHitMissText, createMainContent,
+  renderHeader, createForm, createAttackInstructions, createAttackResultsContainer, updateAttackResult, createMainContent,
 };

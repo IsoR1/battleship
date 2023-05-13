@@ -44,7 +44,7 @@ const createGameBoard = () => {
         if (targetedShip.isSunk()) {
           const sunkShipIndex = this.shipsOnBoard.indexOf(targetedShip);
           this.shipsOnBoard.splice(sunkShipIndex, 1);
-          return `${targetedShip.name} has been sunk!`;
+          return `sunk a ${targetedShip.name}!`;
         }
         return 'Hit!';
       }

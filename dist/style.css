@@ -142,7 +142,7 @@ margin-top: 20px;
 }
 
 .container-div {
-    background-color: yellow;
+    background-color: #F9F8F8;
     width: 80%;
     height: 80%;
     padding: 4px 4px;
@@ -158,7 +158,7 @@ margin-top: 20px;
 }
 
 .col-div {
-    background-color: palegoldenrod;
+    background-color: #8B9474;
     border: 1px solid azure;
     display: flex;
     justify-content: center;
@@ -179,8 +179,21 @@ margin-top: 20px;
     align-items: center;
 }
 
-.hit-miss-div {
+.attack-instructions-div {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.attack-instructions-h2 {
+    color: #A8A39F;
+}
+
+.attack-results-div {
+    display: flex;
+    justify-content: center;
+}
+
+.attack-results-h3 {
+    color: #009FB7;
 }

@@ -3,7 +3,7 @@ const createGameBoard = require('./gameboard');
 const { createPlayer, createAi } = require('./player');
 const gameLoop = require('./game');
 const {
-  renderHeader, createForm, createHitMissText, createMainContent,
+  renderHeader, createForm, createAttackInstructions, createAttackResultsContainer, updateAttackResult, createMainContent,
 } = require('./mainContent');
 
 const header = renderHeader();
@@ -49,7 +49,6 @@ document.addEventListener('click', (e) => {
         const newShip = createShip(ship.name, ship.length);
         const coord = input.value.split(', ').map(Number);
         p1.gameBoard.placeShip(coord, newShip, selectedAlignment);
-        // showShipsOnBoard(coord, newShip, selectedAlignment);
         input.value = '';
         input.classList.add('hidden');
         numShipsPlaced += 1;
@@ -57,12 +56,14 @@ document.addEventListener('click', (e) => {
     });
 
     if (numShipsPlaced === numShips) {
-      const hitMissDiv = createHitMissText();
+      const attackInstructions = createAttackInstructions();
+      const hitMissDivCon = createAttackResultsContainer();
       const underHeaderDiv = document.querySelector('.main-body-div');
       const gameBoardDiv = document.querySelector('.game-board-div');
       const shipPlacementContainer = document.querySelector('.ship-placement-container');
       shipPlacementContainer.remove();
-      underHeaderDiv.insertBefore(hitMissDiv, underHeaderDiv.firstChild);
+      underHeaderDiv.insertBefore(attackInstructions, underHeaderDiv.firstChild);
+      underHeaderDiv.insertBefore(hitMissDivCon, underHeaderDiv.children[1]);
       underHeaderDiv.style.flexDirection = 'column';
       gameBoardDiv.style.justifyContent = 'center';
       gameBoardDiv.style.alignItems = 'center';
@@ -74,6 +75,8 @@ document.addEventListener('click', (e) => {
   if (e.target.matches('.col-div')) {
     const input = [e.target.dataset.colId, e.target.dataset.rowId];
     console.log(input);
-    console.log(p1.attackEnemyGameBoard(input));
+    // console.log(p1.attackEnemyGameBoard(input));
+    const res = p1.attackEnemyGameBoard(input);
+    updateAttackResult(p1.name, res);
   }
 });
