@@ -15,11 +15,21 @@ const columns = document.querySelectorAll('.col-div');
 const p1GameBoard = createGameBoard();
 const aiGameBoard = createGameBoard();
 let p1;
+const ai = createAi(p1GameBoard);
+// eslint-disable-next-line prefer-const
+// let isGameOver = false;
+// eslint-disable-next-line prefer-const
+// let currentPlayer = p1;
+const gameState = {
+  isGameOver: false,
+  currentPlayer: p1,
+};
 let numShipsPlaced = 0;
 nameSubmitButton.addEventListener('click', (e) => {
   e.preventDefault();
   if (nameInput) {
     p1 = createPlayer(nameInput.value, aiGameBoard);
+    gameState.currentPlayer = p1;
     console.log(p1);
     p1GameBoard.createGrid();
     aiGameBoard.createGrid();
@@ -48,7 +58,12 @@ document.addEventListener('click', (e) => {
       if (input.value) {
         const newShip = createShip(ship.name, ship.length);
         const coord = input.value.split(', ').map(Number);
-        p1.gameBoard.placeShip(coord, newShip, selectedAlignment);
+        ai.gameBoard.placeShip(coord, newShip, selectedAlignment);
+        // ai.gameBoard.placeShip(coord, newShip, selectedAlignment);
+        // p1GameBoard.placeShip(coord, newShip, selectedAlignment);
+        // console.log(p1.gameBoard);
+        // console.log(p1GameBoard);
+        // p1.gameBoard.placeShip(coord, newShip, selectedAlignment);
         input.value = '';
         input.classList.add('hidden');
         numShipsPlaced += 1;
@@ -56,6 +71,27 @@ document.addEventListener('click', (e) => {
     });
 
     if (numShipsPlaced === numShips) {
+      // AI ship placement
+      const aiShips = [
+        { name: 'carrier', length: 5 },
+        { name: 'battleship', length: 4 },
+        { name: 'cruiser', length: 3 },
+        { name: 'submarine', length: 3 },
+        { name: 'destroyer', length: 2 },
+      ];
+
+      aiShips.forEach((ship) => {
+        const coordRow = Math.floor(Math.random() * p1.gameBoard.grid.length);
+        const subArr = p1.gameBoard.grid[coordRow];
+        const coordCol = Math.floor(Math.random() * subArr.length);
+        const coord = [coordRow, coordCol];
+        const options = ['VERTICAL', 'HORIZONTAL'];
+        const randomAlignment = options[Math.floor(Math.random() * options.length)];
+        console.log(randomAlignment);
+        console.log(coord);
+        p1.gameBoard.placeShip(coord, ship, randomAlignment);
+      });
+
       const attackInstructions = createAttackInstructions();
       const hitMissDivCon = createAttackResultsContainer();
       const underHeaderDiv = document.querySelector('.main-body-div');
@@ -73,10 +109,20 @@ document.addEventListener('click', (e) => {
 
 document.addEventListener('click', (e) => {
   if (e.target.matches('.col-div')) {
-    const input = [e.target.dataset.colId, e.target.dataset.rowId];
+    // const input = [e.target.dataset.colId, e.target.dataset.rowId];
+    const input = [e.target.dataset.rowId, e.target.dataset.colId];
     console.log(input);
-    // console.log(p1.attackEnemyGameBoard(input));
-    const res = p1.attackEnemyGameBoard(input);
-    updateAttackResult(p1.name, res);
+    // const res = gameLoop(p1, ai, input);
+    // createGameLoop(p1, ai)(input);
+    // console.log(gameLoop(p1, ai, input, isGameOver, currentPlayer));
+    gameLoop(p1, ai, input, gameState);
+    // console.log(p1.gameBoard);
+    console.log(p1);
+    // console.log(ai.gameBoard);
   }
 });
+
+// const coordRow = Math.floor(Math.random() * gameBoard.grid.length);
+// const subArr = gameBoard.grid[coordRow];
+// const coordCol = Math.floor(Math.random() * subArr.length);
+// const coord = [coordRow, coordCol];

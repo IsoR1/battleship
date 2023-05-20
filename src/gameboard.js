@@ -18,23 +18,56 @@ const createGameBoard = () => {
         throw new Error('Alignment is required to place a ship');
       }
       const upperAlignment = alignment.toUpperCase();
-      if (upperAlignment === 'VERTICAL') {
-        const endRow = coord[0] + ship.length - 1;
-        for (let i = coord[0]; i <= endRow; i += 1) {
-          if (this.grid[i][coord[1]] !== '') {
-            throw new Error('There is already a ship at this position');
+
+      let isValidPosition = false;
+      let attempts = 0;
+      const maxAttempts = 1000;
+      while (!isValidPosition && attempts <= maxAttempts) {
+        isValidPosition = true;
+
+        if (upperAlignment === 'VERTICAL') {
+          const endRow = coord[0] + ship.length - 1;
+          if (endRow >= this.grid.length) {
+            attempts += 1;
+            continue; // Try a different position
           }
-          this.grid[i][coord[1]] = ship;
-        }
-      } else if (upperAlignment === 'HORIZONTAL') {
-        const endCol = coord[1] + ship.length - 1;
-        for (let i = coord[1]; i <= endCol; i += 1) {
-          if (this.grid[coord[0]][i] !== '') {
-            throw new Error('There is already a ship at this position');
+          for (let i = coord[0]; i <= endRow; i += 1) {
+            if (!this.grid[i] || this.grid[i][coord[1]] !== '') {
+              isValidPosition = false;
+              attempts += 1;
+              break;
+            }
           }
-          this.grid[coord[0]][i] = ship;
+          if (isValidPosition) {
+            for (let i = coord[0]; i <= endRow; i += 1) {
+              this.grid[i][coord[1]] = ship;
+            }
+          }
+        } else if (upperAlignment === 'HORIZONTAL') {
+          const endCol = coord[1] + ship.length - 1;
+          if (endCol >= this.grid[coord[0]].length) {
+            attempts += 1;
+            continue; // Try a different position
+          }
+          for (let i = coord[1]; i <= endCol; i += 1) {
+            if (!this.grid[coord[0]] || this.grid[coord[0]][i] !== '') {
+              isValidPosition = false;
+              attempts += 1;
+              break;
+            }
+          }
+          if (isValidPosition) {
+            for (let i = coord[1]; i <= endCol; i += 1) {
+              this.grid[coord[0]][i] = ship;
+            }
+          }
         }
       }
+
+      if (attempts === maxAttempts) {
+        throw new Error('Unable to place the ship in a valid position');
+      }
+
       this.shipsOnBoard.push(ship);
     },
     receiveAttack(coord) {
