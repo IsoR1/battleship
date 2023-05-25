@@ -16,6 +16,7 @@ const p1GameBoard = createGameBoard();
 const aiGameBoard = createGameBoard();
 let p1;
 const ai = createAi(p1GameBoard);
+let input;
 // eslint-disable-next-line prefer-const
 // let isGameOver = false;
 // eslint-disable-next-line prefer-const
@@ -58,15 +59,17 @@ document.addEventListener('click', (e) => {
       if (input.value) {
         const newShip = createShip(ship.name, ship.length);
         const coord = input.value.split(', ').map(Number);
-        ai.gameBoard.placeShip(coord, newShip, selectedAlignment);
+        const placement = ai.gameBoard.placeShip(coord, newShip, selectedAlignment);
         // ai.gameBoard.placeShip(coord, newShip, selectedAlignment);
         // p1GameBoard.placeShip(coord, newShip, selectedAlignment);
         // console.log(p1.gameBoard);
         // console.log(p1GameBoard);
         // p1.gameBoard.placeShip(coord, newShip, selectedAlignment);
-        input.value = '';
-        input.classList.add('hidden');
-        numShipsPlaced += 1;
+        if (placement) {
+          input.value = '';
+          input.classList.add('hidden');
+          numShipsPlaced += 1;
+        }
       }
     });
 
@@ -89,7 +92,8 @@ document.addEventListener('click', (e) => {
         const randomAlignment = options[Math.floor(Math.random() * options.length)];
         console.log(randomAlignment);
         console.log(coord);
-        p1.gameBoard.placeShip(coord, ship, randomAlignment);
+        const newShip = createShip(ship.name, ship.length);
+        p1.gameBoard.placeShip(coord, newShip, randomAlignment);
       });
 
       const attackInstructions = createAttackInstructions();
@@ -115,12 +119,46 @@ document.addEventListener('click', (e) => {
     // const res = gameLoop(p1, ai, input);
     // createGameLoop(p1, ai)(input);
     // console.log(gameLoop(p1, ai, input, isGameOver, currentPlayer));
-    gameLoop(p1, ai, input, gameState);
+    const result = gameLoop(p1, ai, input, gameState);
+    // gameLoop(p1, ai, input, gameState);
     // console.log(p1.gameBoard);
     console.log(p1);
     // console.log(ai.gameBoard);
   }
 });
+
+// while (!gameState.isGameOver) {
+//   document.addEventListener('click', (e) => {
+//     if (e.target.matches('.col-div')) {
+
+//     }
+//   });
+// }
+
+const handleAttack = (e) => {
+  const colDiv = e.target;
+  const rowId = colDiv.dataset;
+  const colId = colDiv.dataset;
+  const input = [rowId, colId];
+
+  // const result = gameLoop(p1, ai, input, gameState);
+
+  // updateAttackResult(result);
+  return input;
+};
+
+// while (!gameState.isGameOver) {
+//   columns.forEach((colDiv) => {
+//     // colDiv.addEventListener('click', handleAttack);
+//     colDiv.addEventListener('click', (e) => {
+//       input = handleAttack();
+//     });
+//   });
+
+//   if (p1 && input) {
+//     gameLoop(p1, ai, input, gameState);
+//   }
+// }
 
 // const coordRow = Math.floor(Math.random() * gameBoard.grid.length);
 // const subArr = gameBoard.grid[coordRow];

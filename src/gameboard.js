@@ -17,6 +17,12 @@ const createGameBoard = () => {
       if (!alignment) {
         throw new Error('Alignment is required to place a ship');
       }
+
+      // Check if coord is an array with 2 elements
+      if (!Array.isArray(coord) || coord.length !== 2) {
+        throw new Error('coord should be an array with 2 elements');
+      }
+
       const upperAlignment = alignment.toUpperCase();
 
       let isValidPosition = false;
@@ -27,9 +33,12 @@ const createGameBoard = () => {
 
         if (upperAlignment === 'VERTICAL') {
           const endRow = coord[0] + ship.length - 1;
+          console.log(endRow.length, '-', this.grid[coord[0]].length);
           if (endRow >= this.grid.length) {
+            console.log('bad pos');
+            isValidPosition = false;
             attempts += 1;
-            continue; // Try a different position
+            break; // Try a different position
           }
           for (let i = coord[0]; i <= endRow; i += 1) {
             if (!this.grid[i] || this.grid[i][coord[1]] !== '') {
@@ -45,9 +54,12 @@ const createGameBoard = () => {
           }
         } else if (upperAlignment === 'HORIZONTAL') {
           const endCol = coord[1] + ship.length - 1;
+          console.log(endCol.length, '-', this.grid[coord[0]].length);
           if (endCol >= this.grid[coord[0]].length) {
+            console.log('bad pos');
+            isValidPosition = false;
             attempts += 1;
-            continue; // Try a different position
+            break; // Try a different position
           }
           for (let i = coord[1]; i <= endCol; i += 1) {
             if (!this.grid[coord[0]] || this.grid[coord[0]][i] !== '') {
@@ -68,7 +80,12 @@ const createGameBoard = () => {
         throw new Error('Unable to place the ship in a valid position');
       }
 
-      this.shipsOnBoard.push(ship);
+      if (isValidPosition) {
+        this.shipsOnBoard.push(ship);
+        console.log(this.grid);
+        console.log('test', this.shipsOnBoard.includes(ship));
+        return true;
+      }
     },
     receiveAttack(coord) {
       const targetedShip = this.grid[coord[0]][coord[1]];
