@@ -6,8 +6,10 @@ const {
   renderHeader, createForm, createAttackInstructions, createAttackResultsContainer, updateAttackResult, createMainContent,
 } = require('./mainContent');
 
-const header = renderHeader();
-const nameForm = createForm();
+// const header = renderHeader();
+renderHeader();
+createForm();
+// const nameForm = createForm();
 const nameInput = document.getElementById('player-name');
 const nameSubmitButton = document.querySelector('.name-button');
 const nameFormDiv = document.querySelector('.name-input-div');
@@ -16,11 +18,6 @@ const p1GameBoard = createGameBoard();
 const aiGameBoard = createGameBoard();
 let p1;
 const ai = createAi(p1GameBoard);
-let input;
-// eslint-disable-next-line prefer-const
-// let isGameOver = false;
-// eslint-disable-next-line prefer-const
-// let currentPlayer = p1;
 const gameState = {
   isGameOver: false,
   currentPlayer: p1,
@@ -60,11 +57,6 @@ document.addEventListener('click', (e) => {
         const newShip = createShip(ship.name, ship.length);
         const coord = input.value.split(', ').map(Number);
         const placement = ai.gameBoard.placeShip(coord, newShip, selectedAlignment);
-        // ai.gameBoard.placeShip(coord, newShip, selectedAlignment);
-        // p1GameBoard.placeShip(coord, newShip, selectedAlignment);
-        // console.log(p1.gameBoard);
-        // console.log(p1GameBoard);
-        // p1.gameBoard.placeShip(coord, newShip, selectedAlignment);
         if (placement) {
           input.value = '';
           input.classList.add('hidden');
@@ -84,18 +76,32 @@ document.addEventListener('click', (e) => {
       ];
 
       aiShips.forEach((ship) => {
-        const coordRow = Math.floor(Math.random() * p1.gameBoard.grid.length);
-        const subArr = p1.gameBoard.grid[coordRow];
-        const coordCol = Math.floor(Math.random() * subArr.length);
-        const coord = [coordRow, coordCol];
-        const options = ['VERTICAL', 'HORIZONTAL'];
-        const randomAlignment = options[Math.floor(Math.random() * options.length)];
-        console.log(randomAlignment);
-        console.log(coord);
-        const newShip = createShip(ship.name, ship.length);
-        p1.gameBoard.placeShip(coord, newShip, randomAlignment);
-      });
+        let isValidPlacement = false;
+        let placementCoord;
+        let placementAlignment;
 
+        while (!isValidPlacement) {
+          const coordRow = Math.floor(Math.random() * p1.gameBoard.grid.length);
+          const subArr = p1.gameBoard.grid[coordRow];
+          const coordCol = Math.floor(Math.random() * subArr.length);
+          const coord = [coordRow, coordCol];
+          const options = ['VERTICAL', 'HORIZONTAL'];
+          const randomAlignment = options[Math.floor(Math.random() * options.length)];
+          console.log(randomAlignment);
+          console.log(coord);
+
+          const newShip = createShip(ship.name, ship.length);
+          const p1Placement = p1.gameBoard.placeShip(coord, newShip, randomAlignment);
+
+          if (p1Placement) {
+            isValidPlacement = true;
+            placementCoord = coord;
+            placementAlignment = randomAlignment;
+          }
+        }
+        console.log('success:', placementAlignment, placementCoord);
+      });
+      console.log('ships on board on start', p1.gameBoard.shipsOnBoard);
       const attackInstructions = createAttackInstructions();
       const hitMissDivCon = createAttackResultsContainer();
       const underHeaderDiv = document.querySelector('.main-body-div');
@@ -111,56 +117,15 @@ document.addEventListener('click', (e) => {
   }
 });
 
-document.addEventListener('click', (e) => {
-  if (e.target.matches('.col-div')) {
-    // const input = [e.target.dataset.colId, e.target.dataset.rowId];
-    const input = [e.target.dataset.rowId, e.target.dataset.colId];
-    console.log(input);
-    // const res = gameLoop(p1, ai, input);
-    // createGameLoop(p1, ai)(input);
-    // console.log(gameLoop(p1, ai, input, isGameOver, currentPlayer));
-    const result = gameLoop(p1, ai, input, gameState);
-    // gameLoop(p1, ai, input, gameState);
-    // console.log(p1.gameBoard);
-    console.log(p1);
-    // console.log(ai.gameBoard);
-  }
-});
-
-// while (!gameState.isGameOver) {
-//   document.addEventListener('click', (e) => {
-//     if (e.target.matches('.col-div')) {
-
-//     }
-//   });
-// }
-
-const handleAttack = (e) => {
-  const colDiv = e.target;
-  const rowId = colDiv.dataset;
-  const colId = colDiv.dataset;
-  const input = [rowId, colId];
-
-  // const result = gameLoop(p1, ai, input, gameState);
-
-  // updateAttackResult(result);
-  return input;
-};
-
-// while (!gameState.isGameOver) {
-//   columns.forEach((colDiv) => {
-//     // colDiv.addEventListener('click', handleAttack);
-//     colDiv.addEventListener('click', (e) => {
-//       input = handleAttack();
-//     });
-//   });
-
-//   if (p1 && input) {
-//     gameLoop(p1, ai, input, gameState);
-//   }
-// }
-
-// const coordRow = Math.floor(Math.random() * gameBoard.grid.length);
-// const subArr = gameBoard.grid[coordRow];
-// const coordCol = Math.floor(Math.random() * subArr.length);
-// const coord = [coordRow, coordCol];
+if (!gameState.isGameOver) {
+  document.addEventListener('click', (e) => {
+    if (e.target.matches('.col-div')) {
+      const input = [e.target.dataset.rowId, e.target.dataset.colId];
+      console.log(input);
+      const result = gameLoop(p1, ai, input, gameState);
+      console.log('ships on board', p1.gameBoard.shipsOnBoard);
+      console.log('ai.gb ships on board', ai.gameBoard.shipsOnBoard);
+      console.log(gameState);
+    }
+  });
+}
