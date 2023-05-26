@@ -33,9 +33,7 @@ const createGameBoard = () => {
 
         if (upperAlignment === 'VERTICAL') {
           const endRow = coord[0] + ship.length - 1;
-          console.log(endRow.length, '-', this.grid[coord[0]].length);
           if (endRow >= this.grid.length) {
-            console.log('bad pos');
             isValidPosition = false;
             attempts += 1;
             break; // Try a different position
@@ -54,9 +52,7 @@ const createGameBoard = () => {
           }
         } else if (upperAlignment === 'HORIZONTAL') {
           const endCol = coord[1] + ship.length - 1;
-          console.log(endCol.length, '-', this.grid[coord[0]].length);
           if (endCol >= this.grid[coord[0]].length) {
-            console.log('bad pos');
             isValidPosition = false;
             attempts += 1;
             break; // Try a different position
@@ -82,8 +78,6 @@ const createGameBoard = () => {
 
       if (isValidPosition) {
         this.shipsOnBoard.push(ship);
-        console.log(this.grid);
-        console.log('test', this.shipsOnBoard.includes(ship));
         return true;
       }
     },
@@ -94,6 +88,14 @@ const createGameBoard = () => {
         if (targetedShip.isSunk()) {
           const sunkShipIndex = this.shipsOnBoard.indexOf(targetedShip);
           this.shipsOnBoard.splice(sunkShipIndex, 1);
+
+          for (let i = 0; i < this.grid.length; i += 1) {
+            for (let j = 0; j < this.grid[i].length; j += 1) {
+              if (this.grid[i][j] === targetedShip) {
+                this.grid[i][j] = '';
+              }
+            }
+          }
           return `sunk a ${targetedShip.name}!`;
         }
         return 'Hit!';
