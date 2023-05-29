@@ -188,5 +188,10 @@ const createMainContent = (gameBoard) => {
 };
 
 module.exports = {
-  renderHeader, createForm, createAttackInstructions, createAttackResultsContainer, updateAttackResult, createMainContent,
+  renderHeader,
+  createForm,
+  createAttackInstructions,
+  createAttackResultsContainer,
+  updateAttackResult,
+  createMainContent,
 };

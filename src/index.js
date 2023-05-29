@@ -21,6 +21,8 @@ const ai = createAi(p1GameBoard);
 const gameState = {
   isGameOver: false,
   currentPlayer: p1,
+  hasGameStarted: false,
+  isAiTurn: false,
 };
 let numShipsPlaced = 0;
 nameSubmitButton.addEventListener('click', (e) => {
@@ -68,10 +70,10 @@ document.addEventListener('click', (e) => {
     if (numShipsPlaced === numShips) {
       // AI ship placement
       const aiShips = [
-        { name: 'carrier', length: 5 },
-        { name: 'battleship', length: 4 },
-        { name: 'cruiser', length: 3 },
-        { name: 'submarine', length: 3 },
+        // { name: 'carrier', length: 5 },
+        // { name: 'battleship', length: 4 },
+        // { name: 'cruiser', length: 3 },
+        // { name: 'submarine', length: 3 },
         { name: 'destroyer', length: 2 },
       ];
 
@@ -113,19 +115,31 @@ document.addEventListener('click', (e) => {
       underHeaderDiv.style.flexDirection = 'column';
       gameBoardDiv.style.justifyContent = 'center';
       gameBoardDiv.style.alignItems = 'center';
+      gameState.hasGameStarted = true;
     }
   }
 });
 
 if (!gameState.isGameOver) {
-  document.addEventListener('click', (e) => {
-    if (e.target.matches('.col-div')) {
+  const clickHandler = (e) => {
+    if (e.target.matches('.col-div') && gameState.hasGameStarted && gameState.currentPlayer === p1) {
       const input = [e.target.dataset.rowId, e.target.dataset.colId];
       console.log(input);
       const result = gameLoop(p1, ai, input, gameState);
       console.log('ships on board', p1.gameBoard.shipsOnBoard);
       console.log('ai.gb ships on board', ai.gameBoard.shipsOnBoard);
       console.log(gameState);
+
+      if (gameState.isGameOver) {
+        console.log(`Winner: ${gameState.currentPlayer.name}`);
+        document.removeEventListener('click', clickHandler);
+      }
     }
-  });
+  };
+
+  document.addEventListener('click', clickHandler);
+}
+
+if (gameState.isGameOver) {
+  console.log('s');
 }
