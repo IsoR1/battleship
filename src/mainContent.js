@@ -137,20 +137,6 @@ const leftSidePlaceShips = () => {
   return placementDiv;
 };
 
-//
-// const showShipsOnBoard = (coord, ship, alignment) => {
-//   const firstLetter = ship.name[0].toUpperCase();
-//   const row = document.querySelector(`[data-row-id="${coord[0]}"]`);
-//   if (alignment === 'horizontal') {
-//     for (let i = coord[1]; i < coord[1] + ship.length; i += 1) {
-//       const cell = row.querySelector(`[data-col-id="${i}"]`);
-//       const p = createEl('p', 'ship-letter');
-//       p.innerText = firstLetter;
-//       cell.append(p);
-//     }
-//   }
-// };
-
 const createAttackInstructions = () => {
   const div = createEl('div', 'attack-instructions-div');
   const h2 = createEl('h2', 'attack-instructions-h2');
@@ -173,6 +159,21 @@ const updateAttackResult = (player, attack) => {
   h3.textContent = `${player.substring(0, 1).toUpperCase() + player.substring(1)}'s attack: ${attack}`;
 };
 
+const removeH2Div = () => {
+  const div = document.querySelector('.attack-instructions-div');
+  const h3 = document.querySelector('.attack-results-h3');
+  div.remove();
+  h3.style.fontSize = '2rem';
+};
+
+const winningMessage = (winner) => {
+  const h3 = document.querySelector('.attack-results-h3');
+  if (winner === 0) {
+    h3.textContent = "It's a draw!";
+  }
+  h3.textContent = `${winner} wins!`;
+};
+
 const createMainContent = (gameBoard) => {
   const gameBoardDiv = createEl('div', 'game-board-div');
   const underHeaderDiv = createEl('div', 'main-body-div');
@@ -193,5 +194,7 @@ module.exports = {
   createAttackInstructions,
   createAttackResultsContainer,
   updateAttackResult,
+  winningMessage,
+  removeH2Div,
   createMainContent,
 };

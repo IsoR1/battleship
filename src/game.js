@@ -1,9 +1,8 @@
 const createShip = require('./ship');
 const createGameBoard = require('./gameboard');
 const { createPlayer, createAi } = require('./player');
-const { endGame } = require('./gameutils');
 const {
-  renderHeader, createForm, createAttackInstructions, createAttackResultsContainer, updateAttackResult, createMainContent,
+  renderHeader, createForm, createAttackInstructions, createAttackResultsContainer, updateAttackResult, winningMessage, removeH2Div, createMainContent,
 } = require('./mainContent');
 
 // // const gameLoop = async (p1, ai, attackInput, gameState) => {
@@ -114,53 +113,42 @@ const createGame = () => {
       currentPlayer: null,
       hasGameStarted: false,
       isAITurn: false,
+      numShipsPlaced: 0,
     },
-    handleNameSubmit() {
+    ships: [
+      { name: 'carrier', length: 5, inputId: 'carrier' },
+      { name: 'battleship', length: 4, inputId: 'battleship' },
+      { name: 'cruiser', length: 3, inputId: 'cruiser' },
+      { name: 'submarine', length: 3, inputId: 'submarine' },
+      { name: 'destroyer', length: 2, inputId: 'destroyer' },
+    ],
+    handleNameSubmit(name) {
       const p1GameBoard = createGameBoard();
       const aiGameBoard = createGameBoard();
-      const nameInput = document.getElementById('player-name');
-      const nameSubmitButton = document.querySelector('.name-button');
-      const nameFormDiv = document.querySelector('.name-input-div');
-      nameSubmitButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (nameInput.value) {
-          this.p1 = createPlayer(nameInput.value, aiGameBoard);
-          this.ai = createPlayer(p1GameBoard);
-          p1GameBoard.createGrid();
-          aiGameBoard.createGrid();
-          nameFormDiv.style.display = 'none';
-          this.startGame();
-          // createMainContent(p1.gameBoard);
-        }
-      });
+      p1GameBoard.createGrid();
+      aiGameBoard.createGrid();
+      this.p1 = createPlayer(name, aiGameBoard);
+      this.ai = createAi(p1GameBoard);
+      console.log(this.p1);
     },
     startGame() {
-      // const p1GameBoard = createGameBoard();
-      // const aiGameBoard = createGameBoard();
-      // this.p1 = createPlayer(playerName, aiGameBoard);
-      // this.ai = createPlayer(p1GameBoard);
-      // p1GameBoard.createGrid();
-      // aiGameBoard.createGrid();
       this.gameState.currentPlayer = this.p1;
       this.gameState.hasGameStarted = true;
-      createMainContent(this.p1.gameBoard);
     },
 
     placeShipsFromPlayerInput() {
       const selectedAlignment = document.querySelector('input[name="alignment"]:checked').value;
 
-      const ships = [
-        { name: 'carrier', length: 5, inputId: 'carrier' },
-        { name: 'battleship', length: 4, inputId: 'battleship' },
-        { name: 'cruiser', length: 3, inputId: 'cruiser' },
-        { name: 'submarine', length: 3, inputId: 'submarine' },
-        { name: 'destroyer', length: 2, inputId: 'destroyer' },
-      ];
-      const numShips = ships.length;
+      // const ships = [
+      //   { name: 'carrier', length: 5, inputId: 'carrier' },
+      //   { name: 'battleship', length: 4, inputId: 'battleship' },
+      //   { name: 'cruiser', length: 3, inputId: 'cruiser' },
+      //   { name: 'submarine', length: 3, inputId: 'submarine' },
+      //   { name: 'destroyer', length: 2, inputId: 'destroyer' },
+      // ];
+      const numShips = this.ships.length;
 
-      const numShipsPlaced = 0;
-
-      ships.forEach((ship) => {
+      this.ships.forEach((ship) => {
         const input = document.getElementById(ship.inputId);
         if (input.value) {
           const newShip = createShip(ship.name, ship.length);
@@ -169,12 +157,14 @@ const createGame = () => {
           if (placement) {
             input.value = '';
             input.classList.add('hidden');
-            this.numShipsPlaced += 1;
+            this.gameState.numShipsPlaced += 1;
           }
         }
       });
-      if (numShipsPlaced === numShips) {
+      if (this.gameState.numShipsPlaced === numShips) {
         this.placeAiShips();
+        this.startGame();
+        console.log(this.ai.gameBoard.grid);
       }
     },
     placeAiShips() {
@@ -213,7 +203,7 @@ const createGame = () => {
         }
         console.log('success:', placementAlignment, placementCoord);
       });
-      console.log('ships on board on start', p1.gameBoard.shipsOnBoard);
+      console.log('ships on board on start', this.p1.gameBoard.shipsOnBoard);
       this.gameState.hasGameStarted = true;
       this.setupGameUi();
     },
@@ -234,8 +224,12 @@ const createGame = () => {
       this.gameState.isGameOver = true;
 
       if (winner === 0) {
+        winningMessage(winner);
         return 'Tie';
       }
+      console.log(`Player ${winner} wins!`);
+      winningMessage(winner);
+      removeH2Div();
       return `Player ${winner} wins!`;
     },
     aiAttack() {
@@ -248,28 +242,50 @@ const createGame = () => {
     playerAttack(attackInput) {
       const result = this.p1.attackEnemyGameBoard(attackInput);
       console.log(result);
-      // updateAttackResult(p1.name, result);
+      updateAttackResult(this.p1.name, result);
       this.gameState.isAITurn = true; // Set the flag for AI's turn
       this.gameState.currentPlayer = this.ai;
+      return result;
     },
-    attackLoop() {
-      if (!this.gameState.isGameOver) {
-        const clickHandler = (e) => {
-          if (e.target.matches('.col-div') && gameState.hasGameStarted && gameState.currentPlayer === p1) {
-            const input = [e.target.dataset.rowId, e.target.dataset.colId];
-            console.log(input);
-            const result = console.log('ships on board', this.p1.gameBoard.shipsOnBoard);
-            console.log('ai.gb ships on board', this.ai.gameBoard.shipsOnBoard);
-            console.log(gameState);
-
-            if (gameState.isGameOver) {
-              document.removeEventListener('click', clickHandler);
-            }
-          }
-        };
-
-        document.addEventListener('click', clickHandler);
+    attackLoop(input) {
+      // if (!this.gameState.isGameOver) {
+      if (this.gameState.currentPlayer === this.p1) {
+        const attack = this.playerAttack(input);
+        const aiAttack = this.aiAttack();
       }
+
+      if (this.p1.gameBoard.allShipsSunk() && this.ai.gameBoard.allShipsSunk()) {
+        this.endGame(0);
+      } else if (this.p1.gameBoard.allShipsSunk()) {
+        this.endGame(this.p1.name);
+      } else if (this.ai.gameBoard.allShipsSunk()) {
+        this.endGame(this.ai);
+      }
+      // }
+      // };
+      // if (this.gameState.currentPlayer === p1 && !this.gameState.isAITurn) {
+
+      // }
+      // }
+
+      // if (!this.gameState.isGameOver) {
+      //   const clickHandler = (e) => {
+      //     if (e.target.matches('.col-div') && this.gameState.hasGameStarted && this.gameState.currentPlayer === p1) {
+      //       const input = [e.target.dataset.rowId, e.target.dataset.colId];
+      //       console.log(input);
+      //       const result = console.log('ships on board', this.p1.gameBoard.shipsOnBoard);
+      //       console.log('ai.gb ships on board', this.ai.gameBoard.shipsOnBoard);
+      //       console.log(this.gameState);
+
+      //       if (this.gameState.isGameOver) {
+      //         document.removeEventListener('click', clickHandler);
+      //       }
+      //     }
+      //   };
+
+      //   document.addEventListener('click', clickHandler);
+      // }
+      // this.aiAttack();
     },
   };
   return game;
