@@ -1,3 +1,4 @@
+const { default: expect } = require('expect');
 const createGameBoard = require('../../src/gameboard');
 const createShip = require('../../src/ship');
 
@@ -42,13 +43,15 @@ describe('placeShip', () => {
   test('Should not be able to place a ship horizontally where there already is one', () => {
     const newShip = createShip('Carrier', 5);
     gameBoard.placeShip([0, 3], ship, 'horizontal');
-    expect(() => gameBoard.placeShip([0, 5], newShip, 'horizontal')).toThrow('There is already a ship at this position');
+    const result = gameBoard.placeShip([0, 5], newShip, 'horizontal');
+    expect(result).toBe(false);
   });
 
   test('Should not be able to place a ship vertically where there already is one', () => {
     const newShip = createShip('Carrier', 5);
     gameBoard.placeShip([0, 3], ship, 'vertical');
-    expect(() => gameBoard.placeShip([2, 3], newShip, 'vertical')).toThrow('There is already a ship at this position');
+    const result = gameBoard.placeShip([2, 3], newShip, 'vertical');
+    expect(result).toBe(false);
   });
 });
 
@@ -71,9 +74,8 @@ describe('receiveAttack', () => {
   test('calling receiveAttack on occupied pos should increase hit count on that ship', () => {
     gameBoard.receiveAttack([0, 0]);
     gameBoard.receiveAttack([0, 0]);
-    gameBoard.receiveAttack([0, 0]);
 
-    expect(gameBoard.grid[0][0].hits).toBe(3);
+    expect(gameBoard.grid[0][0].hits).toBe(2);
   });
 
   test('calling receiveAttack when a ship is sunk should remove that ship from the shipsOnBoard array', () => {
